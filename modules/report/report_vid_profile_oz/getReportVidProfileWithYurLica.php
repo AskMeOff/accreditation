@@ -443,8 +443,8 @@ so.oblast, uz.username, count_app, sved_count, sved_name,
 vid_count, vid_name, vid_lishn_count, vid_lishn_name, count_vid_not_in,name_vid_not_in, 
 vid_sved_count, vid_sved_name, vid_sved_lishn_count, vid_sved_lishn_name, count_vid_sved_not_in,name_vid_sved_not_in,
 profile_count, profile_name, profile_lishn_count, profile_lishn_name, count_profile_not_in, name_profile_not_in,
-profile_sved_count, profile_sved_name, profile_sved_lishn_count, profile_sved_lishn_name, count_profile_sved_not_in, name_profile_sved_not_in
-
+profile_sved_count, profile_sved_name, profile_sved_lishn_count, profile_sved_lishn_name, count_profile_sved_not_in, name_profile_sved_not_in, 
+DATE_FORMAT(sdo.schedule_date, '%d-%m-%Y') as  schedule_date
 from accreditation.`tmp_table_report_uz` ttz 
 left outer join accreditation.`tmp_table_report_vid` ttrv on ttz.id_uz=ttrv.id_uz
 left outer join accreditation.`tmp_table_report_vid_not_in` ttrvn on ttz.id_uz=ttrvn.id_uz 
@@ -458,7 +458,7 @@ left outer join accreditation.`tmp_table_report_profile_sved_not_in` ttrpsn on t
 
 left outer join accreditation.spr_oblast so on ttz.id_oblast=so.id_oblast
 left outer join accreditation.uz uz on ttz.id_uz=uz.id_uz
-
+left outer join accreditation.schedule_date_oz sdo on ttz.id_uz=sdo.id_uz and year(schedule_date)=2024
 order by so.order_num, uz.username
 ;
 
@@ -505,7 +505,7 @@ class Report{
     $count_vid_not_in, $name_vid_not_in, $vid_sved_count, $vid_sved_name, $vid_sved_lishn_count, $vid_sved_lishn_name, 
     $count_vid_sved_not_in, $name_vid_sved_not_in, $profile_count, $profile_name, $profile_lishn_count, $profile_lishn_name, 
     $count_profile_not_in, $name_profile_not_in, $profile_sved_count, $profile_sved_name, $profile_sved_lishn_count, 
-    $profile_sved_lishn_name, $count_profile_sved_not_in, $name_profile_sved_not_in;
+    $profile_sved_lishn_name, $count_profile_sved_not_in, $name_profile_sved_not_in, $schedule_date;
 
 
 }
@@ -553,7 +553,8 @@ do {
             $report->profile_sved_lishn_name = $app[26];
             $report->count_profile_sved_not_in = $app[27];
             $report->name_profile_sved_not_in = $app[28];
-        
+            $report->schedule_date = $app[29];
+           
         
             array_push($reports,$report);
         

@@ -732,7 +732,7 @@ if (mysqli_num_rows($rez) == 0) //если нашлась одна строка,
                                                 <input type="file" class="form-control-file hiddentab" id="fileReport" >
                                             </div>
                                         </form>
-                                        <form id="formAdminResh" >
+					<form id="formAdminResh" >
                                             <div class="form-group" id = "divAdminResh" style="margin-left: 2.5rem">
                                                 <label for="" style="font-size: 24px">Административное решение</label><br/>
                                                 <div id="filesContainerAdminResh" style="margin-left: 0px;  margin-top: 0px;"></div>

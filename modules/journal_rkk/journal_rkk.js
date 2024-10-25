@@ -215,6 +215,7 @@ function preperaReport(){
         checkbox_adm_resh_1: false, 
         checkbox_adm_resh_2: false, 
         checkbox_adm_resh_3: false, 
+	checkbox_adm_resh_4: false, 
         adm_resh:0,
         checkbox_pervtor_1: false,
         checkbox_pervtor_2: false,
@@ -335,8 +336,14 @@ function preperaReport(){
     let checkbox_adm_resh_3_value = checkbox_adm_resh_3.checked;
     dataParametrs.checkbox_adm_resh_3 = checkbox_adm_resh_3_value;
 
+    let checkbox_adm_resh_4 = document.getElementById(`checkbox_adm_resh_4`);
+    let checkbox_adm_resh_4_value = checkbox_adm_resh_4.checked;
+    dataParametrs.checkbox_adm_resh_4 = checkbox_adm_resh_4_value;
+
+
+
     let adm_resh = 0
-    if(checkbox_adm_resh_1_value || checkbox_adm_resh_2_value || checkbox_adm_resh_3_value){
+    if(checkbox_adm_resh_1_value || checkbox_adm_resh_2_value || checkbox_adm_resh_3_value || checkbox_adm_resh_4_value){
         adm_resh = 1 
     }
     dataParametrs.adm_resh = adm_resh;
@@ -516,6 +523,11 @@ function prepereTableReport(dataParametrs){
     th26.id='th26'
     th26.style = "border: 1px solid black; text-align: left; line-height: normal; padding: 0.2rem 0.75rem;"
 
+    let th27 = document.createElement('th');
+    th27.innerHTML = 'Статус';
+    th27.id='th27'
+    th27.style = "border: 1px solid black; text-align: left; line-height: normal; padding: 0.2rem 0.75rem;"
+
     let th6 = document.createElement('th');
     th6.innerHTML = 'Дата регистрации заявления';
     th6.id='th6'
@@ -624,12 +636,16 @@ function prepereTableReport(dataParametrs){
   //  trHead.appendChild(th3);
     trHead.appendChild(th4);
 
-    if(dataParametrs.pervtor === 1){
+    if((dataParametrs.pervtor === 1)|| (dataParametrs.adm_resh === 1)){
         trHead.appendChild(th5);
     }
 
-    if(dataParametrs.checkbox_pervtor_2 === true){
+    if((dataParametrs.checkbox_pervtor_2 === true)|| (dataParametrs.adm_resh === 1)){
         trHead.appendChild(th26);
+    }
+
+    if(dataParametrs.adm_resh === 1){
+        trHead.appendChild(th27);
     }
     
     trHead.appendChild(th6);
@@ -701,6 +717,7 @@ function reportPrepere(dataParametrs){
             checkbox_adm_resh_1: dataParametrs.checkbox_adm_resh_1, 
             checkbox_adm_resh_2: dataParametrs.checkbox_adm_resh_2, 
             checkbox_adm_resh_3: dataParametrs.checkbox_adm_resh_3, 
+	    checkbox_adm_resh_4: dataParametrs.checkbox_adm_resh_4, 
             adm_resh: dataParametrs.adm_resh,
             checkbox_pervtor_1: dataParametrs.checkbox_pervtor_1,
             checkbox_pervtor_2: dataParametrs.checkbox_pervtor_2,
@@ -765,13 +782,14 @@ function reportPrepere(dataParametrs){
                 td5.style = "border: 1px dashed black; padding: 0.2rem 0.75rem;text-align:center;line-height: normal; ";
 
                 let td26 = document.createElement('td');
-                if (item['rkkotzyv_str'] === null) {
-                    td26.innerHTML = '';
-                } else {
-                    td26.innerHTML = item['rkkotzyv_str'];
-                }
+                td26.innerHTML = item['rkkotzyv_str'];
                 td26.className='td26'
                 td26.style = "border: 1px dashed black; padding: 0.2rem 0.75rem;text-align:center;line-height: normal; ";
+
+                let td27 = document.createElement('td');
+                td27.innerHTML = item['name_status_report'];
+                td27.className='td27'
+                td27.style = "border: 1px dashed black; padding: 0.2rem 0.75rem;text-align:center;line-height: normal; ";
 
                 let td6 = document.createElement('td');
                 td6.innerHTML = item['date_reg'];
@@ -884,12 +902,16 @@ function reportPrepere(dataParametrs){
                // tr.appendChild(td3);
                 tr.appendChild(td4);
 
-                if(dataParametrs.pervtor === 1){
+                if((dataParametrs.pervtor === 1) || (dataParametrs.adm_resh === 1)){
                     tr.appendChild(td5);
                 }
 
-                if(dataParametrs.checkbox_pervtor_2 === true){
+                if((dataParametrs.checkbox_pervtor_2 === true)|| (dataParametrs.adm_resh === 1)){
                     tr.appendChild(td26);
+                }
+
+                if(dataParametrs.adm_resh === 1){
+                    tr.appendChild(td27);
                 }
 
                 tr.appendChild(td6);
@@ -990,6 +1012,13 @@ function reportPrepere(dataParametrs){
                     divReportUsl.innerHTML  = divReportUsl.innerHTML + ', '
                 } 
                 divReportUsl.innerHTML  = divReportUsl.innerHTML + ' Отказ в приеме заявления'
+            }
+
+	    if(dataParametrs.checkbox_adm_resh_4 === true){
+                if((dataParametrs.checkbox_adm_resh_1 === true)||(dataParametrs.checkbox_adm_resh_2 === true)||(dataParametrs.checkbox_adm_resh_3 === true)){
+                    divReportUsl.innerHTML  = divReportUsl.innerHTML + ', '
+                } 
+                divReportUsl.innerHTML  = divReportUsl.innerHTML + ' Отсутствует административное решение'
             }
            
             divReportUsl.innerHTML  = divReportUsl.innerHTML + '<br/>'

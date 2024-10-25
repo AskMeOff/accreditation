@@ -764,6 +764,10 @@ function reportYurLica(dataParametrs){
         th2.innerHTML = 'Количество ОЗ заявились всего';
         th2.style = "border: 1px solid black; text-align: left;line-height: normal";
 
+        let th2_date = document.createElement('th');
+        th2_date.innerHTML = 'Дата по графику';
+        th2_date.style = "min-Width:100px; border: 1px solid black; text-align: left;line-height: normal";
+
         let th3 = document.createElement('th');
         th3.innerHTML = 'Из них, заявились в соответствии с перечнем (виды) ';
         th3.style = "border: 1px solid black; text-align: left;line-height: normal";
@@ -824,6 +828,7 @@ function reportYurLica(dataParametrs){
 
          trHead.appendChild(th1);
          trHead.appendChild(th2);
+         trHead.appendChild(th2_date);
          trHead.appendChild(th3);
          trHead.appendChild(th4);
          trHead.appendChild(th5);
@@ -911,6 +916,16 @@ function reportYurLica(dataParametrs){
                     let td2_count = document.createElement('td');
                     td2_count.innerHTML =  item['count_app'] ;
                     td2_count.style = "border-bottom: 1px dashed black;  text-align:center; line-height: normal;";
+
+                    let td2_date = document.createElement('td');
+                    td2_date.innerHTML =  item['schedule_date'] ;
+                    td2_date.style = " text-align:center; line-height: normal;";
+
+
+                    let td2_date_count = document.createElement('td');
+                    td2_date_count.innerHTML = '';
+                    td2_date_count.style = "border-bottom: 1px dashed black;  text-align:center; line-height: normal;";
+                    
 
                     let td3 = document.createElement('td');
                     td3.innerHTML =  item['vid_name'] ;
@@ -1024,6 +1039,7 @@ function reportYurLica(dataParametrs){
 
                     trStr.appendChild(td1);
                     trStr.appendChild(td2);
+                    trStr.appendChild(td2_date);
                     trStr.appendChild(td3);
                     trStr.appendChild(td4);
                     trStr.appendChild(td5);
@@ -1040,6 +1056,7 @@ function reportYurLica(dataParametrs){
 
                     trCount.appendChild(td1_count);
                     trCount.appendChild(td2_count);
+                    trCount.appendChild(td2_date_count);
                     trCount.appendChild(td3_count);
                     trCount.appendChild(td4_count);
                     trCount.appendChild(td5_count);

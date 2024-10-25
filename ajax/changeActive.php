@@ -13,7 +13,7 @@ WHERE id_uz IN (
     SELECT us.id_uz
     FROM users us
     LEFT JOIN uz uz ON uz.id_uz = us.id_uz
-    WHERE us.active = '$checked' and id_user  = '$id_user'
+    WHERE us.active = '$checked' and id_user = '$id_user'
 )
 AND id_role = 15;
 

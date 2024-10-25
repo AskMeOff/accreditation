@@ -20,7 +20,7 @@ if (($row['opened'] === "0" ) || ($row['opened'] === null)) {
 }
 else{
     //открыт другим
-    echo "1";
+    echo "0";
 }
 
 ?>

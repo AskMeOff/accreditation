@@ -21,6 +21,7 @@ $date_delo_ = $_GET ['date_delo'];
 $checkbox_adm_resh_1_ = $_GET['checkbox_adm_resh_1']; 
 $checkbox_adm_resh_2_ = $_GET['checkbox_adm_resh_2']; 
 $checkbox_adm_resh_3_ = $_GET['checkbox_adm_resh_3']; 
+$checkbox_adm_resh_4_ = $_GET['checkbox_adm_resh_4']; 
 $adm_resh_ = $_GET['adm_resh'];
 
 
@@ -94,11 +95,38 @@ $adm = '';
     $adm = $adm  . "rkk.result='3'"; 
  }
 
+ if($checkbox_adm_resh_4_=== "true") {
+    if(strlen($adm)>0){
+        $adm = $adm . ' or ';
+     }
+    $adm = $adm  . "rkk.result='0'"; 
+ }
+
  if($adm === ''){
     $adm = '(' . 0 .'='. 0 . ')';
  }else {
    $adm = '(' . $adm . ')';
 }
+
+
+
+$checkRkkotzyvId_2 = explode(',', $checkRkkotzyvId_);
+$checkRkkotzyvId_3 = '';                              
+
+foreach($checkRkkotzyvId_2 as $str){
+    $checkRkkotzyvId_3 .= '(' . 'rkk.rkkotzyv' . '=' . $str . ') or';
+
+}
+
+if($checkRkkotzyvId_ === ''){
+    $checkRkkotzyvId_3 = '0 = 0';
+} else {
+$checkRkkotzyvId_3 = substr($checkRkkotzyvId_3,0,-2);
+$checkRkkotzyvId_3 = '((' .  $checkRkkotzyvId_3 . '))';
+}
+
+
+
 
  $perv_vtor = '';
 
@@ -110,7 +138,7 @@ $adm = '';
     if(strlen($perv_vtor)>0){
         $perv_vtor = $perv_vtor . ' or ';
      }
-    $perv_vtor = $perv_vtor  . "rkk.perv_vtor=2"; 
+    $perv_vtor = $perv_vtor  . "(rkk.perv_vtor=2 and " . $checkRkkotzyvId_3 .')'; 
  } 
 
  if($perv_vtor === ''){
@@ -196,20 +224,7 @@ if($search_check === "false"){
 }
 
 
-$checkRkkotzyvId_2 = explode(',', $checkRkkotzyvId_);
-$checkRkkotzyvId_3 = '';                              
 
-foreach($checkRkkotzyvId_2 as $str){
-    $checkRkkotzyvId_3 .= '(' . 'rkk.rkkotzyv' . '=' . $str . ') or';
-
-}
-
-if($checkRkkotzyvId_ === ''){
-    $checkRkkotzyvId_3 = '0 = 0';
-} else {
-$checkRkkotzyvId_3 = substr($checkRkkotzyvId_3,0,-2);
-$checkRkkotzyvId_3 = '(' . $checkRkkotzyvId_3 . ')';
-}
 
 
 $query = "SELECT rkk.id_rkk, case when a.id_rkk_perv is not null then rkk.id_rkk +'/' + id_rkk_perv else rkk.id_rkk end as num_rkk, rkk.id_application, a.naim, 
@@ -225,12 +240,13 @@ case when rkk.date_delo = '1970-01-01' then '' else DATE_FORMAT(rkk.date_delo, '
 a.zaregal, CONCAT( CONVERT(case when rkk.date_sved = '1970-01-01' then '' else DATE_FORMAT(rkk.date_sved, '%d-%m-%Y')   end, char), ' ', rkk.info_uved) as info_uved , 
 rkk.getter, so.oblast, case when rkk.date_protokol = '1970-01-01' then '' else DATE_FORMAT(rkk.date_protokol, '%d-%m-%Y')  end  as date_protokol,
 rkk.dop_info, case when rkk.checkboxValueGuzo='1' then 'ГУЗО, Комитет' when rkk.checkboxValueGuzo='0' then 'Внутренняя комиссия' else '' end comisia,
-case when a.giveSvid = 1 then 'Полное' when a.giveSvid = 2 then 'Частичное'  else ''  end  as giveSvid
+case when a.giveSvid = 1 then 'Полное' when a.giveSvid = 2 then 'Частичное'  else ''  end  as giveSvid, s.name_status_report
 from accreditation.rkk 
 left outer join accreditation.applications a on rkk.id_application=a.id_application
 left outer join accreditation.uz u on a.id_user=u.id_uz
 left outer join accreditation.spr_oblast so on u.oblast=so.id_oblast
 left outer join accreditation.spr_rkkotzyv sr on rkk.rkkotzyv=sr.id_rkkotzyv
+left outer join accreditation.status s on a.id_status=s.id_status
 where (('$date_reg_' = 0) or ('$date_reg_'=1 and rkk.date_reg between '$date_reg_at_' and '$date_reg_to_'))
 and (('$date_protokol_' = 0) or ('$date_protokol_'=1 and rkk.date_protokol between '$date_protokol_at_' and '$date_protokol_to_'))
 and (('$date_admin_resh_' = 0) or ('$date_admin_resh_'=1 and rkk.date_admin_resh between '$date_admin_resh_at_' and '$date_admin_resh_to_'))
@@ -242,7 +258,7 @@ and $otz_str
 and $guzo
 and (('$checkAllOblast_' = 'true') or ('$checkAllOblast_'='false' and $checkOblastsId_3 )  )
 and $search
-and $checkRkkotzyvId_3
+
 ";
 
 
@@ -257,7 +273,7 @@ for ($data = []; $row = mysqli_fetch_assoc($rez); $data[] = $row);
 class Report{
     public $id_rkk, $num_rkk, $id_application , $naim, $perv_vtor, $date_reg, $ur_adress, $fact_adress, $tel, $email,
      $adm_reah, $adm_resh_num , $date_admin_resh, $svidetelstvo, $date_sved, $sved_srok_deist, $date_delo, $delo,
-     $zaregal, $info_uved, $getter, $oblast, $dop_info, $date_protokol, $comisia, $giveSvid;
+     $zaregal, $info_uved, $getter, $oblast, $dop_info, $date_protokol, $comisia, $giveSvid, $name_status_report;
     
 }
 
@@ -291,7 +307,7 @@ foreach ($data as $app) {
     $report->date_protokol = $app['date_protokol'];
     $report->comisia = $app['comisia'];
     $report->giveSvid = $app['giveSvid'];
-
+    $report->name_status_report = $app['name_status_report'];
     array_push($reports,$report);
 }
 
