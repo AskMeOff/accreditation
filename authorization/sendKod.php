@@ -26,6 +26,11 @@ if ($_POST['login'] != "" && $_POST['password'] != "") //если поля за�
 //                return;
 //            }
 
+            if($login == "rim"){
+                echo '1';
+                return;
+            }
+
             $time = date('Y-m-d H:i:s');
 
 

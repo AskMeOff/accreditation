@@ -630,6 +630,10 @@ function reportYurLica(dataParametrs){
         th9.style = "border: 1px solid black; text-align: left;line-height: normal";
 
 
+        let th10 = document.createElement('th');
+        th10.innerHTML = 'Выявленные недостатки';
+        th10.style = "border: 1px solid black; text-align: left;line-height: normal";
+
          trHead.appendChild(th1);
          trHead.appendChild(th2);
          trHead.appendChild(th3);
@@ -639,6 +643,7 @@ function reportYurLica(dataParametrs){
          trHead.appendChild(th7);
          trHead.appendChild(th8);
          trHead.appendChild(th9);
+         trHead.appendChild(th10);
 
          table.appendChild(trHead);
 
@@ -752,6 +757,10 @@ function reportYurLica(dataParametrs){
 
 
                     }
+
+                    let td10 = document.createElement('td');
+                    td10.style = "border-bottom: 1px dashed black;  text-align:center; line-height: normal;";
+                    td10.innerHTML =  item['defect'] ;
       
 
                     trStr.appendChild(td1);
@@ -763,6 +772,7 @@ function reportYurLica(dataParametrs){
                     trStr.appendChild(td7);
                     trStr.appendChild(td8);
                     trStr.appendChild(td9);
+                    trStr.appendChild(td10);
                     tbody.appendChild(trStr);
 
 

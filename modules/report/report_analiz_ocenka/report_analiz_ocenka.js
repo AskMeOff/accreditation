@@ -414,7 +414,7 @@ function reportYurLica(dataParametrs){
     let data = new Array();
 
     $.ajax({
-        url: "modules/report/report_analiz_samoocenka/getReportSamoocenkaWithYurLica.php",
+        url: "modules/report/report_analiz_ocenka/getReportOcenkaWithYurLica.php",
         method: "GET",
         data: {
             date_create_at: dataParametrs.date_create_at,
@@ -492,7 +492,7 @@ function reportYurLica(dataParametrs){
                  //   td4.style = "border: 1px solid black; padding: 0.2rem 0.75rem;text-align:left;line-height: normal; ";
 
                     let td41 = document.createElement('td');
-                    td41.innerHTML = (index != 0) ? (item['id_application'] != data[idx].id_application) ? item['app_ocenka'] : ''  : item['app_ocenka'];
+                    td41.innerHTML = (index != 0) ? (item['id_application'] != data[idx].id_application) ? item['app_ocenka'] : ''  : item['app_ocenka']  ;
 
                     if(index>0){
                         td1.style = " padding: 0.2rem 0.75rem; text-align:center; line-height: normal;  font-style:italic; font-size: 1.2rem; padding-top:0.7rem ";

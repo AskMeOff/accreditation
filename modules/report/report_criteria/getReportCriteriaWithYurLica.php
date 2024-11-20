@@ -145,6 +145,8 @@ $TableIdStr3 = substr($TableIdStr3,0,-1);
 
 $query = "
 
+SET SESSION  group_concat_max_len =100000;
+
 CREATE TEMPORARY TABLE accreditation.`tmp_table_criteria`(
     id_critertia INT
     );
@@ -199,50 +201,48 @@ left outer join accreditation.z_department d on tts.id_subvision=d.id_subvision
 where d.id_list_tables_criteria in (select * from accreditation.`tmp_table_list`)
 ;
  
-
-CREATE TEMPORARY TABLE accreditation.`tmp_table_report_criteria_count`(
-    id_uz int, 
-    id_list_tables_criteria int, 
-    id_criteria int, 
-    count_yes int, 
-    count_no int, 
-    count_not_need int,
-    count_yes_accred int, 
-    count_no_accred int, 
-    count_not_need_accred int
-    );
-    
-insert into accreditation.`tmp_table_report_criteria_count`    
-select distinct id_uz, id_list_tables_criteria, ac.id_criteria, 
-sum(if( field3=1 ,1,0)) as count_yes, sum(if( field3=2 ,1,0)) as count_no, sum(if( field3=3 ,1,0)) as count_not_need,
-sum(if( field6=1 ,1,0)) as count_yes_accred, sum(if( field6=2 ,1,0)) as count_no_accred, sum(if( field6=3 ,1,0)) as count_not_need_accred
-from accreditation.`tmp_table_department` ttd
-left outer join accreditation.z_answer_criteria ac on ttd.id_department=ac.id_department
-where ac.id_criteria in (select * from accreditation.`tmp_table_criteria`)
-group by  id_uz, id_list_tables_criteria, ac.id_criteria
-;
+ 
+CREATE TEMPORARY TABLE accreditation.`tmp_table_report_criteria_count` ( 
+id_uz int, id_list_tables_criteria int, id_criteria int, count_yes int, count_no int, count_not_need int, 
+count_yes_accred int, count_no_accred int, count_not_need_accred int
+ , defect text 
+); 
 
 
-select tts.username, ltc.name, c.id_criteria, c.pp, c.name as criteria_name,  
-sum(count_yes) as count_yes, sum(count_no) as count_no, sum(count_not_need) as count_not_need,
-sum(count_yes_accred) as count_yes_accred, sum(count_no_accred) as count_no_accred, sum(count_not_need_accred) as count_not_need_accred
-from accreditation.`tmp_table_uz` tts
-left outer join accreditation.`tmp_table_report_criteria_count` ttrcc on tts.id_uz=ttrcc.id_uz
-left outer join accreditation.z_list_tables_criteria ltc on ttrcc.id_list_tables_criteria=ltc.id_list_tables_criteria
-left outer join accreditation.z_criteria c on ttrcc.id_criteria=c.id_criteria
-where ttrcc.id_uz  is not null
-group by tts.username, ltc.name, c.id_criteria, c.pp, c.name
-order by tts.username, ltc.name, c.id_criteria
-;
+insert into accreditation.`tmp_table_report_criteria_count` (
+id_uz , id_list_tables_criteria , id_criteria , count_yes , count_no , count_not_need , 
+count_yes_accred , count_no_accred , count_not_need_accred , defect
+)
+select distinct id_uz, id_list_tables_criteria, ac.id_criteria, sum(if( field3=1 ,1,0)) as count_yes, 
+sum(if( field3=2 ,1,0)) as count_no, sum(if( field3=3 ,1,0)) as count_not_need, sum(if( field6=1 ,1,0)) as count_yes_accred, 
+sum(if( field6=2 ,1,0)) as count_no_accred, sum(if( field6=3 ,1,0)) as count_not_need_accred 
+ ,  GROUP_CONCAT( if (ac.field6=2 ,ac.defect, null) ) 
+from accreditation.`tmp_table_department` ttd 
+left outer join accreditation.z_answer_criteria ac on ttd.id_department=ac.id_department 
+where ac.id_criteria in (select * from accreditation.`tmp_table_criteria`) 
+group by id_uz, id_list_tables_criteria, ac.id_criteria ; 
 
+
+select tts.username, ltc.name, c.id_criteria, c.pp, c.name as criteria_name, sum(count_yes) as count_yes, 
+sum(count_no) as count_no, sum(count_not_need) as count_not_need, sum(count_yes_accred) as count_yes_accred, 
+sum(count_no_accred) as count_no_accred, sum(count_not_need_accred) as count_not_need_accred 
+,   GROUP_CONCAT( ttrcc.defect )  as defect 
+from accreditation.`tmp_table_uz` tts 
+left outer join accreditation.`tmp_table_report_criteria_count` ttrcc on tts.id_uz=ttrcc.id_uz 
+left outer join accreditation.z_list_tables_criteria ltc on ttrcc.id_list_tables_criteria=ltc.id_list_tables_criteria 
+left outer join accreditation.z_criteria c on ttrcc.id_criteria=c.id_criteria 
+
+where ttrcc.id_uz is not null 
+group by tts.username, ltc.name, c.id_criteria, c.pp, c.name order by tts.username, ltc.name, c.id_criteria ;
 ";
+
 
 
 mysqli_multi_query($con, $query);
 
 class Report{
     public   $username, $name, $id_criteria, $pp, $criteria_name, $count_yes, $count_no,
-    $count_not_need, $count_yes_accred, $count_no_accred, $count_not_need_accred;
+    $count_not_need, $count_yes_accred, $count_no_accred, $count_not_need_accred, $defect;
 }
 
 $reports = array();
@@ -267,6 +267,7 @@ do {
             $report->count_yes_accred = $app[8];
             $report->count_no_accred = $app[9];
             $report->count_not_need_accred = $app[10];     
+            $report->defect = $app[11]; 
             array_push($reports,$report);
         } 
     }
