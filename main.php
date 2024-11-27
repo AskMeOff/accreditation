@@ -155,7 +155,12 @@
                     <!--                <h2 class="mb-4 text-dark font-weight-bold">-->
 
                     <?php
-                    $rez = mysqli_query($con, "Select count(*) as countNewApp from applications left outer join `users` on `users`.id_user = applications.id_user where id_status = 1 and `users`.id_role = 3") or die("Ошибка " . mysqli_error($con));
+                    $rez = mysqli_query($con, "select count(*) as countNewApp from(
+select uz.id_uz, uz.username, count(a.id_application) as countResh from uz uz 
+left join users u on u.id_uz = uz.id_uz
+inner join applications a on a.id_user = u.id_user
+where u.id_role = 3 and a.id_status = 1
+group by uz.id_uz) as filtered_institutions;") or die("Ошибка " . mysqli_error($con));
                     if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
                     {
                         $row = mysqli_fetch_assoc($rez);
@@ -165,7 +170,12 @@
                     ?>
 
                     <?php
-                    $rez = mysqli_query($con, "Select count(*) as countSended from applications where id_status = 2") or die("Ошибка " . mysqli_error($con));
+                    $rez = mysqli_query($con, "select count(*) as countSended from(
+select uz.id_uz, uz.username, count(a.id_application) as countResh from uz uz 
+left join users u on u.id_uz = uz.id_uz
+inner join applications a on a.id_user = u.id_user
+where u.id_role = 3 and a.id_status = 2
+group by uz.id_uz) as filtered_institutions;") or die("Ошибка " . mysqli_error($con));
                     if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
                     {
                         $row = mysqli_fetch_assoc($rez);
@@ -176,7 +186,12 @@
 
 
                     <?php
-                    $rez = mysqli_query($con, "Select count(*) as countChecking from applications where id_status = 3") or die("Ошибка " . mysqli_error($con));
+                    $rez = mysqli_query($con, "select count(*) as countChecking from(
+select uz.id_uz, uz.username, count(a.id_application) as countResh from uz uz 
+left join users u on u.id_uz = uz.id_uz
+inner join applications a on a.id_user = u.id_user
+where u.id_role = 3 and a.id_status = 3
+group by uz.id_uz) as filtered_institutions;") or die("Ошибка " . mysqli_error($con));
                     if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
                     {
                         $row = mysqli_fetch_assoc($rez);
@@ -186,7 +201,12 @@
                     ?>
 
                     <?php
-                    $rez = mysqli_query($con, "Select count(*) as countOk from applications where id_status = 4") or die("Ошибка " . mysqli_error($con));
+                    $rez = mysqli_query($con, "select count(*) as countOk from(
+select uz.id_uz, uz.username, count(a.id_application) as countResh from uz uz 
+left join users u on u.id_uz = uz.id_uz
+inner join applications a on a.id_user = u.id_user
+where u.id_role = 3 and a.id_status = 4
+group by uz.id_uz) as filtered_institutions;") or die("Ошибка " . mysqli_error($con));
                     if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
                     {
                         $row = mysqli_fetch_assoc($rez);
@@ -195,7 +215,12 @@
                     $countOk = $row['countOk'];
                     ?>
                     <?php
-                    $rez = mysqli_query($con, "Select count(*) as countResh from applications where id_status = 6") or die("Ошибка " . mysqli_error($con));
+                    $rez = mysqli_query($con, "select count(*) as countResh from(
+select uz.id_uz, uz.username, count(a.id_application) as countResh from uz uz 
+left join users u on u.id_uz = uz.id_uz
+inner join applications a on a.id_user = u.id_user
+where u.id_role = 3 and a.id_status = 6
+group by uz.id_uz) as filtered_institutions;") or die("Ошибка " . mysqli_error($con));
                     if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
                     {
                         $row = mysqli_fetch_assoc($rez);

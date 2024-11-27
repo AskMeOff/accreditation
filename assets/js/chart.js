@@ -1,6 +1,6 @@
 $(function() {
 
-  let allCountOrganization = 464;
+  let allCountOrganization = 463;
 
   /* ChartJS
    * -------
@@ -116,11 +116,12 @@ $(function() {
  let attr3Donut2 = $("#doughnutChart2").get(0).getAttribute("attr3");
  let attr4Donut2 = $("#doughnutChart2").get(0).getAttribute("attr4");
  let attr5Donut2 = $("#doughnutChart2").get(0).getAttribute("attr5");
+let nepodali = allCountOrganization - Number(attr1Donut2)-Number(attr2Donut2)-Number(attr3Donut2)-Number(attr4Donut2)-Number(attr5Donut2);
 
  var doughnutPieData2 = {
     datasets: [{
       data: [Number(attr1Donut2),Number(attr2Donut2),Number(attr3Donut2),Number(attr4Donut2),Number(attr5Donut2),
-        (allCountOrganization+63 - Number(attr1Donut2)-Number(attr2Donut2)-Number(attr3Donut2)-Number(attr4Donut2)-Number(attr5Donut2))],
+        (nepodali < 0 ? 0 : nepodali)],
       backgroundColor: [
         'rgba(255, 99, 132, 0.5)',
         'rgba(54, 162, 235, 0.5)',
