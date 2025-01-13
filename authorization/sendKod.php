@@ -26,29 +26,13 @@ if ($_POST['login'] != "" && $_POST['password'] != "") //если поля за�
 //                return;
 //            }
 
-            if($login == "rim"){
-                echo '1';
-                return;
-            }
 
             $time = date('Y-m-d H:i:s');
 
 
             //////////////////////
 
-            $kod = rand(1000, 9999);
-            $insertquery = "update users set kod = '$kod' WHERE login='$login' ";
 
-            $rez = mysqli_query($con, $insertquery) or die("Ошибка " . mysqli_error($con));
-
-            $textSubj = "Код для авторизации в мед.аккредитации";
-            $msg = "Ваш код авторизации:\n
-                        $kod для логина $login";
-            $headers = 'From: support@rnpcmt.by' . "\r\n" .
-                'Content-type: text/html; charset=utf-8' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-
-            mail($row['email'], $textSubj, $msg, $headers);
             echo "1";
 
 

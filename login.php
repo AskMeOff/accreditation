@@ -252,11 +252,7 @@ include 'authorization/auth.php';
             document.getElementById("exampleInputPassword1").removeAttribute("disabled");
             div11.remove();
             if (response === "1" ) {
-                $('#codeModal').modal({
-                    backdrop: 'static',
-                    keyboard: false,
-                    show: true
-                });
+                checkTimeSession();
 
             } else {
 
@@ -266,34 +262,7 @@ include 'authorization/auth.php';
         })
     }
 
-    let codeSubmit = document.getElementById("codeSubmit");
-    codeSubmit.onclick =   () => {
 
-
-
-        let vvediKod = document.getElementById("codeInput").value;
-        if (vvediKod) {
-
-             $.ajax({
-                url: "authorization/checkAuth.php",
-                method: "POST",
-                data: {
-                    login: document.getElementById("exampleInputEmail1").value,
-                    kod: vvediKod
-                }
-
-            }).then((response) => {
-
-                if (response == "Да") {
-                    checkTimeSession();
-                } else {
-                    alert("Неверный код");
-                }
-            })
-        } else {
-            alert("Вы не ввели код");
-        }
-    }
 
     // function makeSnow() {
     //     const snow = document.createElement("div");
