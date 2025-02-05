@@ -38,7 +38,7 @@ $headers = 'From:'. $email . "\r\n" .
     'Content-type: text/html; charset=utf-8' . "\r\n".
     'X-Mailer: PHP/' . phpversion();
 
-if (mail("support@rnpcmt.by", $subj, $message,$headers)){
+if (mail("support@rnpcmt.by", $subj, $message,$headers,'-f support@rnpcmt.by')){
     echo "Сообщение успешно отправлено";
 } else {
     echo "При отправке сообщения возникли ошибки";
@@ -62,7 +62,7 @@ if($email !== "support@rnpcmt.by") {
         'Content-type: text/html; charset=utf-8' . "\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
-    if (mail($email, $subj1, $message1, $headers1)) {
+    if (mail($email, $subj1, $message1, $headers1,'-f support@rnpcmt.by')) {
         echo "Сообщение успешно отправлено";
     } else {
         echo "При отправке сообщения возникли ошибки";

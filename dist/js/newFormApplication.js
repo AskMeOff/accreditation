@@ -2628,7 +2628,7 @@ function saveCommon(idApp, text, fieldNum) {
         data: {idApp: idApp, fieldNum: fieldNum, text: text.innerText.replace(/[^\w\s\+\-%,.]/gi, '')}
     }).then(function (response) {
         let modalUcomplect = document.getElementById("modalUcomplect");
-        let modalBody = modalUcomplect.getE("modal-body")[0];
+        let modalBody = modalUcomplect.getElementsByClassName("modal-body")[0];
 
         $.ajax({
             url: "ajax/z_ucomplectTable.php",

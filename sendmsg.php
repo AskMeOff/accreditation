@@ -1,10 +1,11 @@
 <?php
 if(!isset($_POST['fio']) and !isset($_POST['email'])){
     ?> <form action="sendmsg.php" method="post">
+        <label for="">на НАШУ почту</label>
         <input type="text" name="fio" placeholder="Укажите ФИО" required>
         <input type="text" name="email" placeholder="Укажите e-mail" required>
         <input type="submit" value="Отправить">
-    </form> <?php
+    </form><br><br> <?php
 } else {
     //показываем форму
     $fio = $_POST['fio'];
@@ -15,16 +16,16 @@ if(!isset($_POST['fio']) and !isset($_POST['email'])){
     $email = urldecode($email);
     $fio = trim($fio);
     $email = trim($email);
-    for ($i = 0; $i < 200; $i++) {
+
         $textSubj = "СУПЕРПИСЬМО";
         $subj = iconv("utf-8", "cp1251", $textSubj);
-        $text = "Проверка".$i;
+        $text = "Проверка-08";
         $message = iconv("utf-8", "cp1251", $text);
-        if (mail("hancharou@rnpcmt.by", $subj, $message, "From: test".$i."@rnpcmt.by \r\n")) {
+        if (mail("wladislaw109@mail.ru", $subj, $message, "From: support@rnpcmt.by \r\n",'-f support@rnpcmt.by')) {
             echo "Сообщение успешно отправлено";
         } else {
             echo "При отправке сообщения возникли ошибки";
         }
-    }
+
 }
 ?>
