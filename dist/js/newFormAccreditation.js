@@ -21,7 +21,6 @@ function newShowModal(id_application) {
 
 
     createrApp = "";
-
     $.ajax({
         url: "ajax/getCreaterApp.php",
         method: "GET",
