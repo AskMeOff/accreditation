@@ -11,12 +11,10 @@ $row = mysqli_fetch_assoc($result);
 $selPervtor = $row['sel_pervtor'];
 $idOldApp = $row['id_old_app'];
 $id_applicationnew = $row['id_application'];
-if ($idOldApp == null && $idOldApp == '')
-{
-    $id_application = $idOldApp;
-}
-else{
+if ($idOldApp == null || $idOldApp == '') {
     $id_application = $id_applicationnew;
+} else {
+    $id_application = $idOldApp;
 }
 if (!file_exists('../docs/documents/'.$login.'/'.$id_application)) {
     mkdir('../docs/documents/'.$login.'/'.$id_application, 0777, true);
@@ -40,5 +38,5 @@ if (isset($_FILES['doverennost']['name'])) {
 
 
 
-
+echo "id_application: " . $id_application;
 ?>
