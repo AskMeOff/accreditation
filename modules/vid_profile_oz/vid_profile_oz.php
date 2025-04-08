@@ -1,4 +1,6 @@
 
+<?php include "modules/modals.php"; ?>
+
 
 <script src="modules/component/bootstrap.bundle.js"></script>
 
@@ -113,8 +115,45 @@ select>option {
         </div>
     </div>
 
-    <script src="modules/vid_profile_oz/vid_profile_oz.js"></script>
+    <div class="modal" id="modalApps">
+        <div class="modal-dialog " style="max-width: 80vw;">
+            <div class="modal-content">
 
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div style="display: flex">
+                        <h4 class="modal-title">Заявления учреждения</h4>
+                    </div>
+
+                    <div style="display: flex">
+
+                        <button type="button" class="btn  btn-danger btn-close  closeXucomplect"
+                                data-bs-dismiss="modal">x
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger closeUcomplect" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="modules/vid_profile_oz/vid_profile_oz.js"></script>
+    <script src="../../dist/js/formAccreditation.js" ></script>
+    <script src="../../dist/js/newFormAccreditation.js" ></script>
 
 
 <?php } else { ?>

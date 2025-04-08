@@ -579,4 +579,22 @@ function returnCheckedId(classElemName, eleNameSearch){
 
  }
 
- 
+
+ function showApplics(idUz){
+     let modalApps = document.getElementById('modalApps')
+     modalApps.style.display = 'block';
+     $.ajax({
+         url: "modules/vid_profile_oz/getAppsByUz.php",
+         method: "GET",
+         data: {id_uz: idUz}
+     })
+         .done(function (response) {
+             modalApps.getElementsByClassName("modal-body")[0].innerHTML = response
+         });
+ }
+
+function closeModalApps(){
+    let modalApps = document.getElementById('modalApps')
+    modalApps.style.display = 'none'
+
+ }

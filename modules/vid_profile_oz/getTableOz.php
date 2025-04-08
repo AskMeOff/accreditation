@@ -57,7 +57,7 @@ echo '
 
         echo '
                  <tr >
-                    <td id="uz_name_'.$id_uz.'">'.$username.'</td>
+                    <td id="uz_name_'.$id_uz.'" onclick="showApplics('.$id_uz.')">'.$username.'</td>
                     <td>
                         <div>
                             <button type="button" class="btn  btn-success "
