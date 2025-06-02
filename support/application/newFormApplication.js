@@ -804,6 +804,7 @@ function newShowModal(id_application) {
 }
 
 async function newShowTab(element, id_sub) {
+
     openTabId = id_sub;
     let tablist = document.getElementById("tablist");
     let mainSearch = document.getElementById("tab1");
@@ -832,7 +833,8 @@ async function newShowTab(element, id_sub) {
         let row = tabDiv.getElementsByClassName("col-12")[1];
         let formCheckInput = document.getElementsByClassName("form-check-input");
         let formButton = document.getElementsByClassName("form-button");
-
+        console.log("ждем");
+        $("#preloader").show();
         row.innerHTML = "";
         $.ajax({
             url: "ajax/newGetListTables.php",
@@ -1149,6 +1151,7 @@ async function newShowTab(element, id_sub) {
             }
             createAccordionCards(id_sub);
         }).then(async () => {
+
             await $.ajax({
                 url: "ajax/newGetActiveListTables.php",
                 method: "GET",
@@ -1198,7 +1201,8 @@ async function newShowTab(element, id_sub) {
                 let cardForAdding1 = cardForAdding.querySelector(":first-child");
                 if (cardForAdding1)
                     cardForAdding1.insertAdjacentHTML("afterbegin", response);
-
+                $("#preloader").hide();
+                console.log("дождались");
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 //
@@ -1259,6 +1263,7 @@ async function newShowTab(element, id_sub) {
 
 
     }
+
 
 }
 

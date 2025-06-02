@@ -150,6 +150,9 @@ select>option {
     </div>
 
 
+    <div style = "display: none">
+        <?php require_once "api_accreditation.php";?>
+    </div>
 
     <script src="modules/vid_profile_oz/vid_profile_oz.js"></script>
     <script src="../../dist/js/formAccreditation.js" ></script>

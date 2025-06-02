@@ -286,6 +286,7 @@
     }
 </style>
 <div class="content-wrapper">
+
     <h2 for="quastion" style = " margin-top: 1rem; cursor: pointer;" id="razled_1_h" onclick="togleDiv('razled_1_h','razled_1_row')">Регламентирующие документы &nbsp;&nbsp;&nbsp;  <i class="fa fa-arrow-left" style="font-size: 1.5rem; color: #148A8A" aria-hidden="true"></i></h2> <?= $role === "12" ? '<input type="file" class="btn btn-linkedin" onchange="addFile(this,1)"/><span ></span>' : ''?><br/>
     <div class="row hidden" id="razled_1_row" style="display: none;">
             <?php
@@ -306,7 +307,26 @@
             <?php } ?>
 
     </div>
+    <h2 for="quastion" style = " margin-top: 1rem; cursor: pointer;" id="razled_4_h" onclick="togleDiv('razled_4_h','razled_4_row')">Приказы о составе комиссии &nbsp;&nbsp;&nbsp;  <i class="fa fa-arrow-left" style="font-size: 1.5rem; color: #148A8A" aria-hidden="true"></i></h2> <?= $role === "12" ? '<input type="file" class="btn btn-linkedin" onchange="addFile(this,1)"/><span ></span>' : ''?><br/>
+    <div class="row hidden" id="razled_4_row" style="display: none;">
+        <?php
+        $query_RAZDEL_4 = "SELECT * FROM `documents` where razdel  = 4 order by document_id ";
+        $result_RAZDEL_4=mysqli_query($con, $query_RAZDEL_4) or die ( mysqli_error($con));
+        for ($data = []; $row = mysqli_fetch_assoc($result_RAZDEL_4); $data[] = $row);
 
+        foreach ($data as $app_RAZDEL_4) {
+
+            ?>
+            <div class="col-lg-2 mb-2" id="docid<?= $app_RAZDEL_4['document_id']?>">
+                <a href="documentation/Регламентирующие документы/<?= $app_RAZDEL_4['doc_name_with_type'] ?>" class="file-link">
+                    <img src="assets/images/<?= $app_RAZDEL_4['img_name'] ?>" alt="<?= $app_RAZDEL_4['doc_type'] ?>" class="file-icon">
+                    <span class="file-name"><?= $app_RAZDEL_4['doc_name'] ?></span>
+                    <?= $role === "12" ? '<button class="btn btn-warning" onclick="delDoc(this)">Удалить</button>' : ''; ?>
+                </a>
+            </div>
+        <?php } ?>
+
+    </div>
     <h2 for="quastion" style = " margin-top: 1rem; cursor: pointer;" id="razled_2_h" onclick="togleDiv('razled_2_h','razled_2_row')" >Формы обязательных документов&nbsp;&nbsp;&nbsp;  <i class="fa fa-arrow-left" style="font-size: 1.5rem; color: #148A8A" aria-hidden="true"></i></h2><?= $role === "12" ? '<input type="file" class="btn btn-linkedin" onchange="addFile(this,2)"/><span ></span>' : '' ?><br/>
     <div class="row hidden" id="razled_2_row" style="display: none;">
         <?php
@@ -640,6 +660,9 @@
                       break;
                   case 3:
                       nameRazdel = "Обучающие материалы и видео";
+                      break;
+                  case 4:
+                      nameRazdel = "Приказы";
                       break;
               }
               aFile.setAttribute("href", "documentation/" + nameRazdel + "/" + element.files[0].name);

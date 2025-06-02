@@ -85,7 +85,7 @@
 
                                         <?php
                                         $id_uz = $_COOKIE['login'];
-                                        $query = " SELECT * FROM users , uz
+                                        $query = " SELECT users.id_user,users.username, users. login, users.password, users.email  FROM users , uz
                                                 WHERE uz.id_uz = users.id_uz and uz.username = '" . $id_uz . "' and id_role = 14;";
                                         $result = mysqli_query($con, $query) or die (mysqli_error($con));
                                         for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row) ;
@@ -95,6 +95,7 @@
                                                style="width:100%">
                                             <thead>
                                             <tr>
+                                                <th>ФИО</th>
                                                 <th>Логин</th>
                                                 <th>Почта</th>
                                                 <th>Пароль</th>
@@ -109,22 +110,26 @@
                                                 ?>
 
                                                 <tr style="cursor: pointer; height: 100px;">
-                                                    <td style="width: 40%;"><textarea style="width: 100%; height: 100%"
+                                                    <td style="width: 30%;"><textarea style="width: 100%; height: 100%"
+                                                                                      id="username_<?= $app['id_user'] ?>"
+                                                                                      rows="5"><?= $app['username'] ?></textarea>
+                                                    </td>
+                                                    <td style="width: 30%;"><textarea style="width: 100%; height: 100%"
                                                                                       id="luser_<?= $app['id_user'] ?>"
                                                                                       rows="5"><?= $app['login'] ?></textarea>
                                                     </td>
-                                                    <td style="width: 40%;"><textarea style="width: 100%; height: 100%"
+                                                    <td style="width: 30%;"><textarea style="width: 100%; height: 100%"
                                                                                       id="em_<?= $app['id_user'] ?>"
                                                                                       rows="5"><?= $app['email'] ?></textarea>
                                                     </td>
-                                                    <td style="width: 40%"><textarea style="width: 100%; height: 100%"
+                                                    <td style="width: 30%"><textarea style="width: 100%; height: 100%"
                                                                                      id="puser_<?= $app['id_user'] ?>"
                                                                                      rows="5"><?= $app['password'] ?></textarea>
                                                     </td>
 
                                                     <td style="width: 10%">
                                                         <button class="btn btn-success btn-fw"
-                                                                onclick="savePodUser('<?= $app['id_user'] ?>', document.getElementById('luser_'+'<?= $app['id_user'] ?>').value, document.getElementById('puser_'+'<?= $app['id_user'] ?>').value, document.getElementById('em_'+'<?= $app['id_user'] ?>').value)">
+                                                                onclick="savePodUser('<?= $app['id_user'] ?>', document.getElementById('username_'+'<?= $app['id_user'] ?>').value,document.getElementById('luser_'+'<?= $app['id_user'] ?>').value, document.getElementById('puser_'+'<?= $app['id_user'] ?>').value, document.getElementById('em_'+'<?= $app['id_user'] ?>').value)">
                                                             Сохранить
                                                         </button>
                                                     </td>
@@ -215,8 +220,13 @@
 
 
 
-        function savePodUser(id_user, login, password, email) {
-            console.log(id_user, login, password);
+        function savePodUser(id_user, username, login, password, email) {
+            console.log(id_user,username, login, password);
+            if ((!username) || (username === null) || (username.trim() === '')) {
+                alert('Поле ФИО не должно быть пустым!');
+                return
+            }
+
             if ((!login) || (login === null) || (login.trim() === '')) {
                 alert('Поле логин не должно быть пустым!');
                 return
@@ -232,6 +242,7 @@
                 return
             }
 
+            username = username.trim();
             login = login.trim();
             password = password.trim();
             email = email.trim();
@@ -240,7 +251,7 @@
             $.ajax({
                 url: "ajax/savePodUserGuzo.php",
                 method: "GET",
-                data: {id_user: id_user, login: login, password: password, email: email, id_role: 14}
+                data: {id_user: id_user,username: username, login: login, password: password, email: email, id_role: 14}
 
             })
                 .done(function (response) {
@@ -279,6 +290,15 @@
             let newTr = document.createElement("tr");
             newTr.id = "newTr";
             newTr.style = "cursor: pointer; height: 100px;";
+
+            let td0 = document.createElement("td");
+            td0.style = "width: 20%;";
+            let textAr0 = document.createElement("textarea");
+            textAr0.setAttribute("rows", "5");
+            textAr0.style = "width: 100%; height: 100%";
+            textAr0.id = "newFio";
+            td0.appendChild(textAr0);
+
             let td1 = document.createElement("td");
             td1.style = "width: 20%;";
             let textAr1 = document.createElement("textarea");
@@ -305,7 +325,7 @@
             btn3.innerHTML = 'Сохранить';
             let id_userMain = getCookie('id_user');
             btn3.onclick = () => {
-                addNewPodUser(textAr1.value, textAr2.value, textAr4.value,id_userMain)
+                addNewPodUser(textAr0.value, textAr1.value, textAr2.value, textAr4.value,id_userMain)
             };
             td3.appendChild(btn3);
 
@@ -319,6 +339,7 @@
                 btnAddFaq.removeAttribute('disabled');
             }
             td4.appendChild(btn4);
+            newTr.appendChild(td0);
             newTr.appendChild(td1);
             newTr.appendChild(td2);
             newTr.appendChild(td5);
@@ -333,9 +354,14 @@
 
         let id_userMain = getCookie('id_user');
 
-        function addNewPodUser(login,  email, password, id_userMain) {
+        function addNewPodUser(fio, login, email, password, id_userMain) {
             if ((!login) || (login === null) || (login.trim() === '')) {
                 alert('Поле логин не должно быть пустым!');
+                return
+            }
+
+            if ((!fio) || (fio === null) || (fio.trim() === '')) {
+                alert('Поле ФИО не должно быть пустым!');
                 return
             }
 
@@ -347,7 +373,7 @@
             $.ajax({
                 url: "ajax/addPodUserGuzo.php",
                 method: "GET",
-                data: {id_userMain: id_userMain, login: login, password: password, email:email}
+                data: {id_userMain: id_userMain, fio: fio, login: login, password: password, email:email}
 
             })
                 .done(function (response) {

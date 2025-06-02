@@ -458,7 +458,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->
-                <div class="modal-header">
+                 <div class="modal-header">
 
                     <h4 class="modal-title" id="sokr_name">Регистрация заявления </h4>
                     <button type="button" id="closexRkk" class="btn  btn-dangers btn-closes" data-bs-dismiss="modal">x
@@ -522,6 +522,7 @@
                                             <option value="3">Отзыв заявления</option>
                                             <option value="4">Изменить в свидетельстве</option>
                                             <option value="5">Неполное свидетельство</option>
+                                            <option value="6">Неполное + внесение изменений</option>
                                         </select>
                                     </div>
 

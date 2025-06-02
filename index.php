@@ -9,7 +9,7 @@ if(isset($_COOKIE['login'])) {
 
     if (!isset($_GET['role'])) {
         $login = $_COOKIE['login'];
-        $query = "SELECT * FROM users where login = '$login'";
+        $query = "SELECT * FROM users where login = '$login' and active = 1";
 
         $rez = mysqli_query($con, $query) or die("Ошибка " . mysqli_error($con));
         if (mysqli_num_rows($rez) == 1) //если нашлась одна строка, значит такой юзер существует в базе данных
@@ -287,7 +287,16 @@ if(isset($_COOKIE['login'])) {
                     case 'report_criteria':
                         include 'modules/report/report_criteria/report_criteria.php';
                         break;
-
+                    case 'report_exec_schedule_application':
+                        include 'modules/report/report_exec_schedule_application/report_exec_schedule_application.php';
+                        break;  
+                    case 'report_sved_accred':
+                        include 'modules/report/report_sved_accred/report_sved_accred.php';
+                        break;       
+		    case 'report_result_admin_proc':
+                        include 'modules/report/report_result_admin_proc/report_result_admin_proc.php';
+                        break;
+                       
                         
                 }
             } else {
@@ -310,6 +319,9 @@ if(isset($_COOKIE['login'])) {
         <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
+</div>
+<div id="preloader" style="display:none;">
+    <div class="loader"></div>
 </div>
 <!-- container-scroller -->
 <!-- plugins:js -->

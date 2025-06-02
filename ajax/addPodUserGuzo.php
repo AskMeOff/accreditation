@@ -1,6 +1,7 @@
 <?php
 include "connection.php";
 $id_userMain = $_COOKIE['id_user'];
+$fio = $_GET['fio'];
 $login = $_GET['login'];
 $password = $_GET['password'];
 $email = $_GET['email'];
@@ -17,7 +18,7 @@ if (mysqli_num_rows($rez2) > 0){
 
         $row = mysqli_fetch_assoc($rez); //она записывается в ассоциативный массив
         $id_uz = $row['id_uz'];
-        mysqli_query($con, "Insert into users(`login`, `email`,`password`, `id_role`, `id_uz`) values('$login','$email','$md5Pass', '14', '$id_uz') ");
+        mysqli_query($con, "Insert into users(`username`,`login`, `email`,`password`, `id_role`, `id_uz`) values('$fio','$login','$email','$md5Pass', '14', '$id_uz') ");
     }
 }
 ?>
